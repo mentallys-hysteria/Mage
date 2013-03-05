@@ -62,7 +62,7 @@ if not PQ_MageLoaded then
 	IgniteBanking = 0
 	
 	PQ_MageLoaded = true
-	PQR_WriteToChat(&amp;quot;|cff91e782Nova Fire Mage data is |cff82cee7Loaded!|cffffffff&amp;quot;)
+	PQR_WriteToChat(&amp;quot;|cff91e782Hysteria Fire Mage data is |cff82cee7Loaded!|cffffffff&amp;quot;)
 end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Automatic Buffing</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_MA = PQ_MA
 local PQ_ABril = PQ_ABril
 local PQ_AuraInfo = PQ_AuraInfo
@@ -86,11 +86,11 @@ if PQR_IsMoving(0.3) then
 	end
 end</Lua><RecastDelay>200</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_LB = PQ_LB
 local PQ_NT = PQ_NT
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local PQ_FrostBomb = PQ_FrostBomb
 local TargetValidation = TargetValidation
 
-if Nova_Spell[PQ_LB].known then
+if Hysteria_Spell[PQ_LB].known then
 	if TargetValidation(&amp;quot;target&amp;quot;,PQ_LB) and not UnitDebuffID(&amp;quot;target&amp;quot;,PQ_LB,&amp;quot;PLAYER&amp;quot;) then
 		if LivingBomb &amp;lt; 3 then
 			CastSpellByName(GetSpellInfo(PQ_LB),&amp;quot;target&amp;quot;)
@@ -99,7 +99,7 @@ if Nova_Spell[PQ_LB].known then
 	end
 end
 
-if Nova_Spell[PQ_NT].known then
+if Hysteria_Spell[PQ_NT].known then
 	local NT,_,_,_,_,_,NTtimer = UnitDebuffID(&amp;quot;target&amp;quot;,PQ_NT,&amp;quot;PLAYER&amp;quot;)
 	
 	if UnitExists(&amp;quot;target&amp;quot;)
@@ -116,7 +116,7 @@ if Nova_Spell[PQ_NT].known then
 	end
 end
 
-if Nova_Spell[PQ_FrostBomb].known then
+if Hysteria_Spell[PQ_FrostBomb].known then
 	if PQR_IsMoving(0.3) then return false end
 	if UnitExists(&amp;quot;target&amp;quot;)
 	and PQR_SpellAvailable(PQ_FrostBomb)
@@ -128,11 +128,11 @@ if Nova_Spell[PQ_FrostBomb].known then
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Mouseover)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_LB = PQ_LB
 local PQ_NT = PQ_NT
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local PQ_FrostBomb = PQ_FrostBomb
 local TargetValidation = TargetValidation
 
-if Nova_Spell[PQ_LB].known then
+if Hysteria_Spell[PQ_LB].known then
 	if TargetValidation(&amp;quot;mouseover&amp;quot;,PQ_LB) and not UnitDebuffID(&amp;quot;mouseover&amp;quot;,PQ_LB,&amp;quot;PLAYER&amp;quot;) then
 		if LivingBomb &amp;lt; 3 then
 			CastSpellByName(GetSpellInfo(PQ_LB),&amp;quot;mouseover&amp;quot;)
@@ -141,7 +141,7 @@ if Nova_Spell[PQ_LB].known then
 	end
 end
 
-if Nova_Spell[PQ_NT].known then
+if Hysteria_Spell[PQ_NT].known then
 	local NT,_,_,_,_,_,NTtimer = UnitDebuffID(&amp;quot;mouseover&amp;quot;,PQ_NT,&amp;quot;PLAYER&amp;quot;)
 	
 	if UnitExists(&amp;quot;mouseover&amp;quot;)
@@ -159,11 +159,11 @@ if Nova_Spell[PQ_NT].known then
 end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Pyroblast</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_PY = PQ_PY
 local PQ_POM = PQ_POM
 local PQ_Pyro = PQ_Pyro
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local TargetValidation = TargetValidation
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_Pyro) then
-	if Nova_Spell[PQ_POM].known then
+	if Hysteria_Spell[PQ_POM].known then
 		if UnitBuffID(&amp;quot;player&amp;quot;,PQ_PY) or UnitBuffID(&amp;quot;player&amp;quot;,PQ_POM) then
 			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_Pyro),&amp;quot;target&amp;quot;)
@@ -239,9 +239,9 @@ local PQ_PY = PQ_PY
 local PQ_POM = PQ_POM
 local PQ_Comb = PQ_Comb
 local PQ_Round = PQ_Round
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 
-if Nova_Spell[PQ_POM].known and not SCD then
+if Hysteria_Spell[PQ_POM].known and not SCD then
 	if UnitAffectingCombat(&amp;quot;player&amp;quot;) then
 		if PQR_SpellAvailable(PQ_POM) then
 			if PQR_SpellAvailable(PQ_Comb) then
@@ -257,14 +257,14 @@ local PQ_PY = PQ_PY
 local PQ_POM = PQ_POM
 local SCD = SCD
 local Trinket = Trinket
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local SpecialUnit = SpecialUnit
 
-if Nova_Spell[PQ_AT].known
+if Hysteria_Spell[PQ_AT].known
 	and not SCD
 	and SpecialUnit()
 then
-	if Nova_Spell[PQ_POM].known then
+	if Hysteria_Spell[PQ_POM].known then
 		if UnitAffectingCombat(&amp;quot;player&amp;quot;) then
 			if PQR_SpellAvailable(PQ_AT) then
 				if UnitBuffID(&amp;quot;player&amp;quot;,PQ_POM) and UnitBuffID(&amp;quot;player&amp;quot;,PQ_PY) then
@@ -287,9 +287,9 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False
 local PQ_RoP = PQ_RoP
 local PQ_Invo = PQ_Invo
 local PQ_Ward = PQ_Ward
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 
-if Nova_Spell[PQ_Invo].known then
+if Hysteria_Spell[PQ_Invo].known then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_Evo)
@@ -302,7 +302,7 @@ if Nova_Spell[PQ_Invo].known then
 	end
 end
 
-if Nova_Spell[PQ_RoP].known then
+if Hysteria_Spell[PQ_RoP].known then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_RoP)
@@ -316,7 +316,7 @@ if Nova_Spell[PQ_RoP].known then
 	end
 end
 
-if Nova_Spell[PQ_Ward].known then
+if Hysteria_Spell[PQ_Ward].known then
 	if PQR_SpellAvailable(PQ_Ward)
 		and IsRightControlKeyDown()
 		and not GetCurrentKeyBoardFocus()
@@ -326,7 +326,7 @@ if Nova_Spell[PQ_Ward].known then
 		return true
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Mana Gem</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Invo = PQ_Invo
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local Hysteria_UnitInfo = Hysteria_UnitInfo
 
 for i=1,6 do
@@ -334,7 +334,7 @@ for i=1,6 do
 end
 
 -- Loop all current glyphs
-if Nova_Spell[PQ_Invo].known then return false else
+if Hysteria_Spell[PQ_Invo].known then return false else
 		if improvedGem then
 			if UnitAffectingCombat(&amp;quot;player&amp;quot;) then
 				if GetItemCount(81901,false,true) &amp;gt; 0 and select(3,Hysteria_UnitInfo(&amp;quot;player&amp;quot;)) &amp;lt; 74 and GetItemCooldown(81901) == 0 then
@@ -365,9 +365,9 @@ if Nova_Spell[PQ_Invo].known then return false else
 end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Level 45 Talent</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FJ = PQ_FJ
 local PQ_IW = PQ_IW
 local PQ_RoF = PQ_RoF
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 
-if Nova_Spell[PQ_FJ].known then
+if Hysteria_Spell[PQ_FJ].known then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_FJ)
@@ -380,7 +380,7 @@ if Nova_Spell[PQ_FJ].known then
 	end
 end
 
-if Nova_Spell[PQ_IW].known then
+if Hysteria_Spell[PQ_IW].known then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_IW)
@@ -393,7 +393,7 @@ if Nova_Spell[PQ_IW].known then
 	end
 end
 
-if Nova_Spell[PQ_RoF].known then
+if Hysteria_Spell[PQ_RoF].known then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_RoF)
@@ -406,10 +406,10 @@ if Nova_Spell[PQ_RoF].known then
 		return true
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Pause Rotation</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>if IsLeftAltKeyDown() and not GetCurrentKeyBoardFocus() then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Level 30 Talent</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Barrier = PQ_Barrier
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 local PQ_Temporal = PQ_Temporal
 
-if Nova_Spell[PQ_Barrier].known then
+if Hysteria_Spell[PQ_Barrier].known then
 	if PQR_SpellAvailable(PQ_Barrier)
 		and IsRightShiftKeyDown()
 		and not GetCurrentKeyBoardFocus()
@@ -420,7 +420,7 @@ if Nova_Spell[PQ_Barrier].known then
 	end
 end
 
-if Nova_Spell[PQ_Temporal].known then
+if Hysteria_Spell[PQ_Temporal].known then
 	if PQR_SpellAvailable(PQ_Temporal)
 		and IsRightShiftKeyDown()
 		and not GetCurrentKeyBoardFocus()
@@ -467,9 +467,9 @@ if IsPlayerSpell(33702) then
 		return true
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Blizzard</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Blizzard = PQ_Blizzard
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 
-if Nova_Spell[PQ_Blizzard].known then
+if Hysteria_Spell[PQ_Blizzard].known then
 	if PQR_SpellAvailable(PQ_Blizzard)
 	and IsLeftControlKeyDown()
 	and not GetCurrentKeyBoardFocus() then
@@ -478,9 +478,9 @@ if Nova_Spell[PQ_Blizzard].known then
 		return true
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Flamestrike</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FS = PQ_FS
-local Nova_Spell = Nova_Spell
+local Hysteria_Spell = Hysteria_Spell
 
-if Nova_Spell[PQ_FS].known then
+if Hysteria_Spell[PQ_FS].known then
 	if PQR_SpellAvailable(PQ_FS)
 		and IsLeftControlKeyDown()
 		and not GetCurrentKeyBoardFocus() then

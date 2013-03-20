@@ -93,6 +93,7 @@ if PQI:IsHotkeys(PQI_MentallyMage_PauseRotation_key)
 	and not GetCurrentKeyBoardFocus() then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Alchemy: Lifeblood</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local SpecialUnit = SpecialUnit
 local PQ_HasHero = PQ_HasHero
 local SCD = SCD
+
 -- Herbalism&amp;apos;s Lifeblood
 PQ_Lifeblood = {81708,74497,121279,55428,55480,55500,55501,55502,55503}
 
@@ -399,7 +400,6 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False
 local PQ_Temporal = PQ_Temporal
 
 if not PQI_MentallyMage_Level30Talent_enable then return false end
---if not PQI:IsHotkeys(PQI_MentallyMage_Level30Talent_key) then return false end
 
 if IsPlayerSpell(PQ_Barrier) then
 	if PQR_SpellAvailable(PQ_Barrier)
@@ -423,11 +423,13 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Player</Target><CancelChannel>False
 local PQ_IW = PQ_IW
 local PQ_RoF = PQ_RoF
 
+if not PQI_MentallyMage_Level45Talent_enable then return false end
+
 if IsPlayerSpell(PQ_FJ) then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_FJ)
-		--and IsRightAltKeyDown()
+		and PQI:IsHotkeys(PQI_MentallyMage_Level45Talent_key)
 		and not GetCurrentKeyBoardFocus() then
 			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_FJ),&amp;quot;target&amp;quot;)
@@ -439,7 +441,7 @@ if IsPlayerSpell(PQ_IW) then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_IW)
-		--and IsRightAltKeyDown()
+		and PQI:IsHotkeys(PQI_MentallyMage_Level45Talent_key)
 		and not GetCurrentKeyBoardFocus() then
 			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_IW),&amp;quot;target&amp;quot;)
@@ -451,7 +453,7 @@ if IsPlayerSpell(PQ_RoF) then
 	if PQR_IsMoving(0.1) then return false end
 	
 	if PQR_SpellAvailable(PQ_RoF)
-		--and IsRightAltKeyDown()
+		and PQI:IsHotkeys(PQI_MentallyMage_Level45Talent_key)
 		and not GetCurrentKeyBoardFocus() then
 			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_RoF),nil)
@@ -522,7 +524,6 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False
 local PQ_ATB = PQ_ATB
 
 if not PQI_MentallyMage_AlterTime_enable then return false end
-if not PQI:IsHotkeys(PQI_MentallyMage_AlterTime_key) then return false end
 
 if IsPlayerSpell(PQ_AT)
 	and PQR_SpellAvailable(PQ_AT)
@@ -534,7 +535,6 @@ if IsPlayerSpell(PQ_AT)
 end
 
 if IsPlayerSpell(PQ_AT)
-	and PQR_SpellAvailable(PQ_AT)
 	and UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB)
 	and PQI:IsHotkeys(PQI_MentallyMage_AlterTime_key)
 	and not GetCurrentKeyBoardFocus() then

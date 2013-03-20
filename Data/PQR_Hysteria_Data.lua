@@ -24,6 +24,9 @@ buffs = {
 -- Trinket Proc list
 buffList = {104423,128985,125487,96230,105702,104993,26297,33702,126577,2825,32182,80353,90355,126659,126478,136082,126605,126476,136089,138898,139133,138786,138703,138963}
 
+-- Doom no-dot List
+disableDoomList = {69556,69553,69548,69492,69491,69480,69153,60885,68192,69050,70579,69069,69172,69184,69168}
+
 -- Complete boss unit table (Dungeons/Heroics/Raids)
 PQ_BossUnits = {
 	-- Cataclysm Dungeons --
@@ -190,6 +193,37 @@ PQ_TemporaryBuffs = {
 	{spellID = PQ_SynapseSprings, check = true, hasBuff = false, endTime = nil}
 }
 
+-- Warlock Tier set table
+warlockT15 = {
+	96725,96726,96727,96728,96729,	-- Tier 15: Heroic
+	95325,95326,95327,95328,95329,	-- Tier 15: Normal
+	95981,95982,95983,95984,95985	-- Tier 15: LFR
+}
+
+-- Disable Doom
+disableDoom = nil
+function disableDoom(unit)
+	local disableDoomList = disableDoomList
+	local npcID = false
+	
+	-- Grab NPC ID
+	if UnitExists("target") then
+		local npcID = tonumber(UnitGUID("target"):sub(6,10), 16)
+	end
+	if UnitExists("mouseover") then
+		local npcID = tonumber(UnitGUID("mouseover"):sub(6,10), 16)
+	end
+	
+	-- Loop Units.
+	if npcID then
+		for i=1,#disableDoom do
+			if disableDoom[i] == npcID then return true end
+		end
+		return false
+	end
+end
+	
+
 -- Unit Information Function
 Hysteria_UnitInfo = nil
 function Hysteria_UnitInfo(t)
@@ -307,6 +341,18 @@ function isMindControledUnit(unit)
 		end
 		return true
 	end
+end
+
+-- Returns the number of items currently equipped from the given table.
+itemCheck = nil
+function itemCheck(tbl)
+	local itemCount = 0
+	for i=1,#tbl do
+		if IsEquippedItem(tbl[i]) then
+			itemCount = itemCount + 1
+		end
+	end
+	return itemCount
 end
 
 -- Aura Information Function
@@ -572,8 +618,8 @@ elseif select(2, UnitClass("player")) == "MAGE" then
 				hotkeys	= {'rc', 'ra'},
 			},
 			{	name	= "Toggle Cooldown Mode",
-				enable	= true,
-				hotkeys	= {'rs'},
+				enable	= false,
+				hotkeys	= {},
 			},
 			{	name	= "Alter Time",
 				enable	= true,
@@ -588,12 +634,16 @@ elseif select(2, UnitClass("player")) == "MAGE" then
 				hotkeys	= {'rc'},
 			},
 			{	name	= "Level 45 Talent",
-				enable	= true,
+				enable	= false,
 				hotkeys	= {},
 			},
 			{	name	= "Level 90 Talent",
 				enable	= true,
 				hotkeys	= {'ra'},
+			},
+			{	name	= "Pet Freeze (Mouseover)",
+				enable	= true,
+				hotkeys	= {'rs'},
 			},
 		},
 	}

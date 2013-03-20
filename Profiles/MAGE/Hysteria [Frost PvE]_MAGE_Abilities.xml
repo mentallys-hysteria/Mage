@@ -303,13 +303,13 @@ if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_LB = PQ_LB
 local PQ_NT = PQ_NT
-local Hysteria_Spell = Hysteria_Spell
 local PQ_FrostBomb = PQ_FrostBomb
 local TargetValidation = TargetValidation
 
 if IsPlayerSpell(PQ_LB) then
 	if TargetValidation(&amp;quot;target&amp;quot;,PQ_LB) and not UnitDebuffID(&amp;quot;target&amp;quot;,PQ_LB,&amp;quot;PLAYER&amp;quot;) then
 		if LivingBomb &amp;lt; 3 then
+			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_LB),&amp;quot;target&amp;quot;)
 			return true
 		end
@@ -326,10 +326,15 @@ if IsPlayerSpell(PQ_NT) then
 	and not PQR_IsOutOfSight(&amp;quot;target&amp;quot;, 1) then
 		if NT then
 			if NTtimer - GetTime() &amp;lt;= 3 then
+				SpellCancelQueuedSpell()
 				CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;target&amp;quot;)
 				return true
 			end
-		else CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;target&amp;quot;) return true end
+		else
+			SpellCancelQueuedSpell()
+			CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;target&amp;quot;)
+			return true
+		end
 	end
 end
 
@@ -341,6 +346,7 @@ if IsPlayerSpell(PQ_FrostBomb) then
 	and UnitCanAttack(&amp;quot;player&amp;quot;,&amp;quot;target&amp;quot;) == 1
 	and not UnitIsDeadOrGhost(&amp;quot;target&amp;quot;)
 	and not PQR_IsOutOfSight(&amp;quot;target&amp;quot;, 1) then
+		SpellCancelQueuedSpell()
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;target&amp;quot;)
 		return true
 	end
@@ -557,4 +563,64 @@ if UnitExists(&amp;quot;pet&amp;quot;)
 		CastSpellByName(GetSpellInfo(PQ_Freeze),nil)
 		if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end
 		return true
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Mouseover)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_LB = PQ_LB
+local PQ_NT = PQ_NT
+local TargetValidation = TargetValidation
+
+if not PQI_MentallyMage_EnableMouseoverDotting_enable then return false end
+
+if IsPlayerSpell(PQ_LB) then
+	if TargetValidation(&amp;quot;mouseover&amp;quot;,PQ_LB) and not UnitDebuffID(&amp;quot;mouseover&amp;quot;,PQ_LB,&amp;quot;PLAYER&amp;quot;) then
+		if LivingBomb &amp;lt; 3 then
+			CastSpellByName(GetSpellInfo(PQ_LB),&amp;quot;mouseover&amp;quot;)
+			return true
+		end
+	end
+end
+
+if IsPlayerSpell(PQ_NT) then
+	local NT,_,_,_,_,_,NTtimer = UnitDebuffID(&amp;quot;mouseover&amp;quot;,PQ_NT,&amp;quot;PLAYER&amp;quot;)
+
+	if UnitExists(&amp;quot;mouseover&amp;quot;)
+	and PQR_SpellAvailable(PQ_NT)
+	and UnitCanAttack(&amp;quot;player&amp;quot;,&amp;quot;mouseover&amp;quot;) == 1
+	and not UnitIsDeadOrGhost(&amp;quot;mouseover&amp;quot;)
+	and not PQR_IsOutOfSight(&amp;quot;mouseover&amp;quot;, 1) then
+		if NT then
+			if NTtimer - GetTime() &amp;lt;= 3 then
+				CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;mouseover&amp;quot;)
+				return true
+			end
+		else CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;mouseover&amp;quot;) return true end
+	end
+end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Focus)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_LB = PQ_LB
+local PQ_NT = PQ_NT
+local TargetValidation = TargetValidation
+
+if not PQI_MentallyMage_EnableFocusDotting_enable then return false end
+
+if IsPlayerSpell(PQ_LB) then
+	if TargetValidation(&amp;quot;focus&amp;quot;,PQ_LB) and not UnitDebuffID(&amp;quot;focus&amp;quot;,PQ_LB,&amp;quot;PLAYER&amp;quot;) then
+		if LivingBomb &amp;lt; 3 then
+			CastSpellByName(GetSpellInfo(PQ_LB),&amp;quot;focus&amp;quot;)
+			return true
+		end
+	end
+end
+
+if IsPlayerSpell(PQ_NT) then
+	local NT,_,_,_,_,_,NTtimer = UnitDebuffID(&amp;quot;focus&amp;quot;,PQ_NT,&amp;quot;PLAYER&amp;quot;)
+
+	if UnitExists(&amp;quot;focus&amp;quot;)
+	and PQR_SpellAvailable(PQ_NT)
+	and UnitCanAttack(&amp;quot;player&amp;quot;,&amp;quot;focus&amp;quot;) == 1
+	and not UnitIsDeadOrGhost(&amp;quot;focus&amp;quot;)
+	and not PQR_IsOutOfSight(&amp;quot;focus&amp;quot;, 1) then
+		if NT then
+			if NTtimer - GetTime() &amp;lt;= 3 then
+				CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;focus&amp;quot;)
+				return true
+			end
+		else CastSpellByName(GetSpellInfo(PQ_NT),&amp;quot;focus&amp;quot;) return true end
+	end
+end</Lua><RecastDelay>0</RecastDelay><Target>Focus</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>

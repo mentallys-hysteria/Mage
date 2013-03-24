@@ -62,6 +62,11 @@ end
 PQR_ResetMovementTime = 0.3
 PQR_SpellAvailableTime = ((select(3,GetNetStats()) + select(4,GetNetStats())) / 1000)
 
+-- Dynamically update Icy Veins ID.
+if IsPlayerSpell(131078) then
+	PQ_IV = 131078
+else PQ_IV = 12472 end
+
 -- Don&amp;apos;t automatically start if we&amp;apos;re mounted.
 if IsMounted() then return true end
 
@@ -285,7 +290,7 @@ local TargetValidation = TargetValidation
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_FFB) then
 
 	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF)
-		and (UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2) then
+		and (UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2 or SCD) then
 			SpellCancelQueuedSpell()
 			CastSpellByName(GetSpellInfo(PQ_FFB),&amp;quot;target&amp;quot;)
 			return true
@@ -298,7 +303,7 @@ local TargetValidation = TargetValidation
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
 	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF)
-		and (UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2) then
+		and (UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2 or SCD) then
 			CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;)
 			return true
 	end

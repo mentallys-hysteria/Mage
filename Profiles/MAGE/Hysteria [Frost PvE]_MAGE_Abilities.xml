@@ -271,6 +271,7 @@ if not select(2,GetSpellAutocast(31707)) then
 	EnableSpellAutocast(GetSpellInfo(31707))
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frozen Orb</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FO = PQ_FO
 local PQ_FoF = PQ_FoF
+local SpecialUnit = SpecialUnit
 
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) then
 	if Hysteria_Spell[PQ_FO].known
@@ -278,9 +279,16 @@ if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) then
 		and UnitCanAttack(&amp;quot;player&amp;quot;,&amp;quot;target&amp;quot;)
 		and PQR_SpellAvailable(PQ_FO)
 		and not SCD
-		and SpecialUnit()
 		and not PQR_IsMoving(0.3)
-	then CastSpellByName(GetSpellInfo(PQ_FO),&amp;quot;target&amp;quot;) return true end
+	then
+		if not PQI_MentallyMage_BossCooldown_enable then
+			CastSpellByName(GetSpellInfo(PQ_FO),&amp;quot;target&amp;quot;) return true
+		else
+			if SpecialUnit() then
+				CastSpellByName(GetSpellInfo(PQ_FO),&amp;quot;target&amp;quot;) return true
+			end
+		end
+	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Level 90 Talent</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Evo = PQ_Evo
 local PQ_RoP = PQ_RoP
 local PQ_Invo = PQ_Invo
@@ -528,7 +536,7 @@ local PQ_BrainF = PQ_BrainF
 local TargetValidation = TargetValidation
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_FFB) then
-	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF) and select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2 then
+	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF) and select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 5 then
 		SpellCancelQueuedSpell()
 		CastSpellByName(GetSpellInfo(PQ_FFB),&amp;quot;target&amp;quot;)
 		return true
@@ -540,7 +548,7 @@ local PQ_FoF = PQ_FoF
 local TargetValidation = TargetValidation
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
-	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) and select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 2 then
+	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) and select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 5 then
 		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;)
 		return true
 	end

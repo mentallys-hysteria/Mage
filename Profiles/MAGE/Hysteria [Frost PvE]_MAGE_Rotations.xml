@@ -1,1 +1,23 @@
-<?xml version="1.0" encoding="utf-8" ?><MAGE><Options><ProfileVersion>1.0</ProfileVersion><AbilityURL></AbilityURL><RotationURL></RotationURL><LuaURL></LuaURL><LegacyMode>False</LegacyMode></Options><Rotation><RotationName>Standard</RotationName><RotationDefault>false</RotationDefault><RotationList>[Misc] Initialization|[Misc] Pause Rotation|Level 90 Talent|[Support] Mana Gem|[Misc] Pet Management|[Support] Automatic Buffing|[Misc] Instance: Combat Detection|[Pet] Freeze|[Support] Healthstone|Level 30 Talent|Mirror Image|Frozen Orb|[Support] Icy Veins|[Support] Racials|[Support] Potion Usage|[Support] Presence of Mind|[Support] Alchemy: Lifeblood|[Support] Alter Time|Frostfire Bolt|Ice Lance|Mage Bomb|Frostbolt (Debuff)|Mage Bomb (Focus)|Mage Bomb (Mouseover)|Frostbolt|Fire Blast (Movement)|Ice Lance (Movement)</RotationList><RequireCombat>false</RequireCombat><RotationNotes></RotationNotes></Rotation></MAGE>
+<?xml version="1.0" encoding="utf-8" ?><MAGE><Options><ProfileVersion>2.0</ProfileVersion><AbilityURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Abilities.xml</AbilityURL><RotationURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Rotations.xml</RotationURL><LuaURL>https://raw.github.com/mentallys-hysteria/Mage/master/Data/PQR_Hysteria_Data.lua</LuaURL><LegacyMode>True</LegacyMode></Options><Rotation><RotationName>Standard</RotationName><RotationDefault>false</RotationDefault><RotationList>[Misc] Initialization|[Misc] Automatic Buffing|[Misc] Pet Management|[Misc] Pause Rotation|[Misc] Instanced Combat Detection|[Support] Healthstone|[Support] Mana Gem|[Support] Auto Gem|[Support] Level 90 Talent|[Support] Level 45 Talent|[Support] Level 30 Talent|[Support] Mirror Image|[Support] Icy Veins|[Support] Herbalism: Lifeblood|[Support] Racials|[Support] Auto Potion|[Support] Presence of Mind|[Support] Alter Time|[Pet] Freeze|Flamestrike|Frozen Orb|Frostfire Bolt (High)|Ice Lance (High)|Mage Bomb (Boss)|Mage Bomb|Mage Bomb (Focus)|Mage Bomb (Mouseover)|Frostbolt (Debuff)|Frostfire Bolt|Ice Lance|Frostbolt|Fire Blast (Movement)|Ice Lance (Movement)</RotationList><RequireCombat>false</RequireCombat><RotationNotes>Automatic Frost Mage rotation based upon personal experience SimulactionCraft. Ready for 5.2 and beyond!
+
+Support:
+- Focus dotting with Mage Bomb
+- Mouseover dotting with Mage Bomb
+- Smart boss dotting with Mage Bomb
+
+- Automatic Buffing
+- Automatic Mana Gem usage
+- Automatic DPS Potion usage
+- Automatic Healthstone usage
+
+- Full cooldown support with 2 different modes. Manual or Automatic
+
+.. And so much more!
+
+Default keybindings:
+- Level 90 Talent: Right Alt
+- Level 30 Talent: Right Control
+- Flamestrike (on Mouseover): Left Alt
+- Pet Freeze (on Mouseover): Left Shift
+
+Everything is completely configurable in-game for the ultimate custom play experience!</RotationNotes></Rotation></MAGE>

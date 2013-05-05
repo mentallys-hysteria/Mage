@@ -45,6 +45,10 @@ local itemCheck = itemCheck
 local visionTrinket = visionTrinket
 if itemCheck(visionTrinket) == 1 then hasVision = true else hasVision = false end
 
+-- Icy Veins can be glyphed!
+if IsPlayerSpell(56364) then PQ_IV = 131078
+	else PQ_IV = 12472 end
+
 -- Cooldown Timer function
 if not SCDtimer then SCDtimer = 0 end
 if not SCD then SCD = false end

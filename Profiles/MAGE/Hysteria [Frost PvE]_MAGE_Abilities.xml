@@ -597,13 +597,20 @@ local PQ_ATB = PQ_ATB
 local PQ_FFB = PQ_FFB
 local PQ_BrainF = PQ_BrainF
 local TargetValidation = TargetValidation
+local IVCD = GetSpellCooldown(PQ_IV) + select(2,GetSpellCooldown(PQ_IV)) - GetTime()
 
 -- Don&amp;apos;t cast anything if we don&amp;apos;t have a buff
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF) then return false end
 
 -- During automatic mode, only cast if Alter Time is active, Icy Veins on CD or we&amp;apos;re saving CDs
 if PQI_MentallyMage_AutomaticFrostMode_enable then
-	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 5 or SCD then
+	if SpecialUnit() then
+		if UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or IVCD &amp;gt; 10 or SCD then
+			if TargetValidation(&amp;quot;target&amp;quot;,PQ_FFB) then
+				CastSpellByName(GetSpellInfo(PQ_FFB),&amp;quot;target&amp;quot;) return true
+			end
+		end
+	else
 		if TargetValidation(&amp;quot;target&amp;quot;,PQ_FFB) then
 			CastSpellByName(GetSpellInfo(PQ_FFB),&amp;quot;target&amp;quot;) return true
 		end
@@ -617,14 +624,22 @@ local SCD = SCD
 local PQ_ATB = PQ_ATB
 local PQ_IL = PQ_IL
 local PQ_FoF = PQ_FoF
+local SpecialUnit = SpecialUnit
 local TargetValidation = TargetValidation
+local IVCD = GetSpellCooldown(PQ_IV) + select(2,GetSpellCooldown(PQ_IV)) - GetTime()
 
 -- Don&amp;apos;t cast anything if we don&amp;apos;t have a buff
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) then return false end
 
 -- During automatic mode, only cast if Alter Time is active, Icy Veins on CD or we&amp;apos;re saving CDs
 if PQI_MentallyMage_AutomaticFrostMode_enable then
-	if UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or select(2,GetSpellCooldown(PQ_IV)) &amp;gt; 5 or SCD then
+	if SpecialUnit() then
+		if UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) or IVCD &amp;gt; 10 or SCD then
+			if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+				CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+			end
+		end
+	else
 		if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
 			CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
 		end
@@ -770,31 +785,41 @@ if IsPlayerSpell(PQ_FrostBomb) then
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;mouseover&amp;quot;) return true
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Boss)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_NT = PQ_NT
+local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
 
 -- Disable if disabled in PQInterface
-if not PQI_MentallyMage_BossDotting_enable then return false end
+if not PQI_MentallyMage_AutoBossDotting_enable then return false end
 
 for i=1,4 do
 	local bossUnit = &amp;quot;boss&amp;quot;..i
 	
-	if UnitExists(bossUnit) then
+	if TargetValidation(bossUnit,PQ_Frostbolt) then
 		-- Bad, bad immunities.
 		if UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250)
 			then return false end
-			
+
+		-- Nether Tempest
 		if IsPlayerSpell(PQ_NT) then
 			local NT,_,_,_,_,_,NTtimer = UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;)
 			
-			if PQR_SpellAvailable(PQ_NT)
-				and UnitCanAttack(&amp;quot;player&amp;quot;,bossUnit) == 1
-				and not UnitIsDeadOrGhost(bossUnit) then
-					if NT then
-						if NTtimer - GetTime &amp;lt;= 2 then
-							CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true
-						end
-					else CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true end
+			if PQR_SpellAvailable(PQ_NT) then
+				if NT then
+					if NTtimer - GetTime &amp;lt;= 2 then
+						CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true
+					end
+				else CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true end
 			end
 		end
 	end
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Frag Belt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local Belt = GetInventoryItemID(&amp;quot;player&amp;quot;, 6)
+
+-- Don&amp;apos;t use it if it&amp;apos;s on cooldown as well!
+if GetItemCooldown(Belt) &amp;gt; 0 then return false end
+
+-- Cast Frag Belt on target during Metamorphosis
+if GetCurrentKeyBoardFocus() == nil and UnitIsUnit(&amp;quot;target&amp;quot;, &amp;quot;mouseover&amp;quot;) then
+	UseItemByName(Belt)
+	if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end
+	return true
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>

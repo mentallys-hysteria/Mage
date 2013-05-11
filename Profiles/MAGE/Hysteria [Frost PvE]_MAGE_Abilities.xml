@@ -117,7 +117,10 @@ if GetItemCount(5512,false,true) &amp;gt; 0
 then
 	UseItemByName(5512)
 	return true
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Mana Gem</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local glyphedGem = false
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Mana Gem</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- Conjure Mana Gem Level Check
+if not IsPlayerSpell(759) then return false end
+
+local glyphedGem = false
 local v=PQI_MentallyMage_ManaGem_value
 
 if not PQI_MentallyMage_ManaGem_enable then return false end
@@ -140,6 +143,9 @@ else
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Pet Management</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>if not PQI_MentallyMage_PetManagement_enable then return false end
 
 local PQ_WElm = PQ_WElm
+
+-- Water Elemental Level Check
+if not IsPlayerSpell(PQ_WElm) then return false end
 
 -- Don&amp;apos;t execute if we&amp;apos;re flying.
 if IsFlying() then return false end
@@ -167,11 +173,17 @@ if UnitCastingInfo(&amp;quot;player&amp;quot;) == GetSpellInfo(PQ_FA)
 if UnitCastingInfo(&amp;quot;player&amp;quot;) == GetSpellInfo(PQ_WElm) then return false end
 if UnitCastingInfo(&amp;quot;player&amp;quot;) == GetSpellInfo(PQ_FA) then return false end
 
+-- Frost Armor Level Check
+if not IsPlayerSpell(PQ_FA) then return false end
+
 -- Buff if we don&amp;apos;t have Frost Armor
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FA) then
 	CastSpellByName(GetSpellInfo(PQ_FA),&amp;quot;player&amp;quot;)
 	return true
 end
+
+-- Arcane Brilliance Level Check
+if not IsPlayerSpell(PQ_ABril) then return false end
 
 -- Buff Brilliance if we don&amp;apos;t have a Spellpower buff
 if not PQ_AuraInfo(5,&amp;quot;player&amp;quot;) then
@@ -215,7 +227,10 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False
 
 if (not UnitAffectingCombat(&amp;quot;player&amp;quot;) and UnitExists(&amp;quot;boss1&amp;quot;))
 	or not UnitAffectingCombat(&amp;quot;player&amp;quot;)
-then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Create Mana Gem</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local glyphedGem = false
+then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Create Mana Gem</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- Conjure Mana Gem Level Check
+if not IsPlayerSpell(759) then return false end
+
+local glyphedGem = false
 if IsPlayerSpell(56383) then glyphedGem = true end
 
 if UnitCastingInfo(&amp;quot;player&amp;quot;) == GetSpellInfo(759) then return false end
@@ -436,6 +451,9 @@ local SpecialUnit = SpecialUnit
 local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
 
+-- Mirror Image Level Check
+if not IsPlayerSpell(PQ_MI) then return false end
+
 -- Disable if disabled in PQInterface
 if not PQI_MentallyMage_AutomaticMirrorImage_enable then return false end
 
@@ -551,6 +569,9 @@ if UnitBuffID(&amp;quot;player&amp;quot;,PQ_IV) or select(2,GetSpellCooldown(PQ_
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Pet] Freeze</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Freeze = PQ_Freeze
 
+-- Water Elemental Freeze Level Check
+if not IsPlayerSpell(PQ_Freeze) then return false end
+
 if not PQI_MentallyMage_PetFreezeMouseover_enable then return false end
 
 if UnitExists(&amp;quot;pet&amp;quot;)
@@ -561,6 +582,9 @@ if UnitExists(&amp;quot;pet&amp;quot;)
 		if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end
 		return true
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Flamestrike (Mouseover)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FS = PQ_FS
+
+-- Flamestrike Level Check
+if not IsPlayerSpell(PQ_FS) then return false end
 
 if not PQI_MentallyMage_FlamestrikeMouseover_enable then return false end
 
@@ -573,6 +597,9 @@ if PQR_SpellAvailable(PQ_FS)
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frozen Orb</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FO = PQ_FO
 local PQ_FoF = PQ_FoF
 local SpecialUnit = SpecialUnit
+
+-- Frozen Orb Check
+if not IsPlayerSpell(PQ_FO) then return false end
 
 if IsPlayerSpell(PQ_FO)
 	and UnitExists(&amp;quot;target&amp;quot;)
@@ -589,6 +616,9 @@ if IsPlayerSpell(PQ_FO)
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Fire Blast (Movement)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FBlast = PQ_FBlast
 local TargetValidation = TargetValidation
 
+-- Fire Blast Level Check
+if not IsPlayerSpell(PQ_FBlast) then return false end
+
 if not PQR_IsMoving(0.3) then return false end
 if not PQR_SpellAvailable(PQ_FBlast) then return false end
 
@@ -596,6 +626,9 @@ if TargetValidation(&amp;quot;target&amp;quot;,PQ_FBlast) then
 	CastSpellByName(GetSpellInfo(PQ_FBlast),&amp;quot;target&amp;quot;) return true
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Ice Lance (Movement)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_IL = PQ_IL
 local TargetValidation = TargetValidation
+
+-- Ice Lance Level Check
+if not IsPlayerSpell(PQ_IL) then return false end
 
 if not PQR_IsMoving(0.3) then return false end
 if not PQR_SpellAvailable(PQ_IL) then return false end
@@ -610,6 +643,9 @@ local PQ_BrainF = PQ_BrainF
 local SpecialUnit = SpecialUnit
 local TargetValidation = TargetValidation
 local IVCD = GetSpellCooldown(PQ_IV) + select(2,GetSpellCooldown(PQ_IV)) - GetTime()
+
+-- Frostfire Bolt Level Check
+if not IsPlayerSpell(PQ_FFB) then return false end
 
 -- Don&amp;apos;t cast anything if we don&amp;apos;t have a buff
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF) then return false end
@@ -640,6 +676,9 @@ local SpecialUnit = SpecialUnit
 local TargetValidation = TargetValidation
 local IVCD = GetSpellCooldown(PQ_IV) + select(2,GetSpellCooldown(PQ_IV)) - GetTime()
 
+-- Ice Lance Level Check
+if not IsPlayerSpell(PQ_IL) then return false end
+
 -- Don&amp;apos;t cast anything if we don&amp;apos;t have a buff
 if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) then return false end
 
@@ -662,6 +701,9 @@ else
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frostbolt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
+
+-- Frostbolt Level Check
+if not IsPlayerSpell(PQ_Frostbolt) then return false end
 
 if PQR_IsMoving(0.3) then return false end
 
@@ -796,31 +838,7 @@ if IsPlayerSpell(PQ_FrostBomb) then
 	and not PQR_IsOutOfSight(&amp;quot;mouseover&amp;quot;, 1) then
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;mouseover&amp;quot;) return true
 	end
-end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Boss)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_NT = PQ_NT
-local PQ_Frostbolt = PQ_Frostbolt
-local TargetValidation = TargetValidation
-
--- Disable Boss dotting if we&amp;apos;ve unchecked it in the config.
-if not PQI_MentallyMage_AutoBossDotting_enable then return false end
-
--- We&amp;apos;re on cooldown somehow
-if not PQR_SpellAvailable(PQ_NT) then return false end
-
--- Keep DoTs on bosses when in range
-for i=1,4 do
-	local bossUnit = &amp;quot;boss&amp;quot;..i
-	
-	-- Some bosses have immunities, these are bad
-	if UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250)
-		then return false end
-	
-	if TargetValidation(bossUnit,PQ_Frostbolt) then
-		if not UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;) then
-			CastSpellByName(GetSpellInfo(PQ_NT),bossUnit)
-			return true
-		end
-	end
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Frag Belt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- If we don&amp;apos;t know Engineering. Don&amp;apos;t activate.
+end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Frag Belt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- If we don&amp;apos;t know Engineering. Don&amp;apos;t activate.
 for i=1,9 do
 	if select(7,GetProfessionInfo(i)) == 202 then hasEngi = true end
 end

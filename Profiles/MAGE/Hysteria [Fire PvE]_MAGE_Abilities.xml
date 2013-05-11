@@ -738,7 +738,6 @@ if PQI_MentallyMage_AutomaticFireMode_enable then
 		-- Mega Crits
 		if pyroCrit == 1 then
 			if IgniteDamage &amp;gt;= ((3*PyroDamage)*(PQ_Round(GetMasteryEffect(),2)/100)*0.5) then
-				print(IgniteDamage)
 				CastSpellByName(GetSpellInfo(PQ_Comb),&amp;quot;target&amp;quot;) return true
 			end
 		end
@@ -750,7 +749,6 @@ if PQI_MentallyMage_AutomaticFireMode_enable then
 			and not UnitBuffID(&amp;quot;player&amp;quot;,PQ_ATB) then
 				if fireballCrit == 1 then
 					if IgniteDamage &amp;gt;= ((FireballDamage+InfernoDamage+PyroDamage)*(PQ_Round(GetMasteryEffect(),2)/100)*0.5) then
-						print(IgniteDamage)
 						CastSpellByName(GetSpellInfo(PQ_Comb),&amp;quot;target&amp;quot;) return true
 					end
 				end

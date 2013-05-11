@@ -40,6 +40,13 @@ if UnitLevel(&amp;quot;player&amp;quot;) &amp;gt;= 10 then
 	end
 end
 
+-- Stop the profile if we&amp;apos;re channeling Evocation
+local PQ_Evo = PQ_Evo
+local PQ_Invo = PQ_Invo
+if IsPlayerSpell(PQ_Invo) then
+	if UnitChannelInfo(&amp;quot;player&amp;quot;) == GetSpellInfo(PQ_Evo) then return false end
+end
+
 -- Unerring Vision of Lei-Shen check.
 local itemCheck = itemCheck
 local visionTrinket = visionTrinket
@@ -423,7 +430,7 @@ if IsPlayerSpell(33702) then
 			end
 		end
 	end
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Mirror Image</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_MI = PQ_MI
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Mirror Image</Name><Default>false</Default><SpellID>0</SpellID><Actions>/use 13|/use 14|/use 10|/script UIErrorsFrame:Clear()</Actions><Lua>local PQ_MI = PQ_MI
 local SCD = SCD
 local SpecialUnit = SpecialUnit
 local PQ_Frostbolt = PQ_Frostbolt
@@ -448,6 +455,9 @@ local PQ_POM = PQ_POM
 local PQ_Frostbolt = PQ_Frostbolt
 local FS,_,_,FScount = UnitDebuffID(&amp;quot;target&amp;quot;,PQ_Frostbolt,&amp;quot;PLAYER&amp;quot;)
 
+-- Saving cooldowns, disable.
+if SCD then return false end
+
 -- Don&amp;apos;t use outside of combat
 if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
 
@@ -456,9 +466,6 @@ if PQI_MentallyMage_AutomaticFrostMode_enable then
 	if IsPlayerSpell(PQ_POM) and not PQR_SpellAvailable(PQ_POM) then
 		if select(2,GetSpellCooldown(PQ_POM)) &amp;lt; 15 then return false end
 	end
-	
-	-- Saving cooldowns, disable.
-	if SCD then return false end
 	
 	if IsPlayerSpell(PQ_IV)
 		and FS and FScount &amp;gt; 2
@@ -490,6 +497,9 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False
 local PQ_IV = PQ_IV
 local PQ_ATB = PQ_ATB
 local PQ_POM = PQ_POM
+
+-- We&amp;apos;re saving cooldowns!
+if SCD then return false end
 
 if PQI_MentallyMage_AutomaticFrostMode_enable then
 	-- Sync up with Presence of Mind if we have it.
@@ -530,6 +540,7 @@ local PQ_POM = PQ_POM
 
 if not PQI_MentallyMage_AutomaticFrostMode_enable then return false end
 
+if SCD then return false end
 if not IsPlayerSpell(PQ_POM) then return false end
 if not UnitExists(&amp;quot;target&amp;quot;) then return false end
 if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
@@ -596,6 +607,7 @@ local SCD = SCD
 local PQ_ATB = PQ_ATB
 local PQ_FFB = PQ_FFB
 local PQ_BrainF = PQ_BrainF
+local SpecialUnit = SpecialUnit
 local TargetValidation = TargetValidation
 local IVCD = GetSpellCooldown(PQ_IV) + select(2,GetSpellCooldown(PQ_IV)) - GetTime()
 
@@ -788,38 +800,65 @@ end</Lua><RecastDelay>0</RecastDelay><Target>Mouseover</Target><CancelChannel>Fa
 local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
 
--- Disable if disabled in PQInterface
+-- Disable Boss dotting if we&amp;apos;ve unchecked it in the config.
 if not PQI_MentallyMage_AutoBossDotting_enable then return false end
 
+-- We&amp;apos;re on cooldown somehow
+if not PQR_SpellAvailable(PQ_NT) then return false end
+
+-- Keep DoTs on bosses when in range
 for i=1,4 do
 	local bossUnit = &amp;quot;boss&amp;quot;..i
 	
+	-- Some bosses have immunities, these are bad
+	if UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250)
+		then return false end
+	
 	if TargetValidation(bossUnit,PQ_Frostbolt) then
-		-- Bad, bad immunities.
-		if UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250)
-			then return false end
-
-		-- Nether Tempest
-		if IsPlayerSpell(PQ_NT) then
-			local NT,_,_,_,_,_,NTtimer = UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;)
-			
-			if PQR_SpellAvailable(PQ_NT) then
-				if NT then
-					if NTtimer - GetTime &amp;lt;= 2 then
-						CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true
-					end
-				else CastSpellByName(GetSpellInfo(PQ_NT),bossUnit) return true end
-			end
+		if not UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;) then
+			CastSpellByName(GetSpellInfo(PQ_NT),bossUnit)
+			return true
 		end
 	end
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Frag Belt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local Belt = GetInventoryItemID(&amp;quot;player&amp;quot;, 6)
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Frag Belt</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- If we don&amp;apos;t know Engineering. Don&amp;apos;t activate.
+for i=1,9 do
+	if select(7,GetProfessionInfo(i)) == 202 then hasEngi = true end
+end
+
+local PQ_Frostbolt = PQ_Frostbolt
+local TargetValidation = TargetValidation
+local Belt = GetInventoryItemID(&amp;quot;player&amp;quot;, 6)
+
+if not hasEngi then return false end
+
+-- Don&amp;apos;t use outside of combat
+if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
 
 -- Don&amp;apos;t use it if it&amp;apos;s on cooldown as well!
 if GetItemCooldown(Belt) &amp;gt; 0 then return false end
 
 -- Cast Frag Belt on target during Metamorphosis
-if GetCurrentKeyBoardFocus() == nil and UnitIsUnit(&amp;quot;target&amp;quot;, &amp;quot;mouseover&amp;quot;) then
+if TargetValidation(PQ_Frostbolt) then
 	UseItemByName(Belt)
 	if SpellIsTargeting() then CameraOrSelectOrMoveStart() CameraOrSelectOrMoveStop() end
 	return true
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Synapse Springs</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- If we don&amp;apos;t know Engineering. Don&amp;apos;t activate.
+for i=1,9 do
+	if select(7,GetProfessionInfo(i)) == 202 then hasEngi = true end
+end
+
+local PQ_Frostbolt = PQ_Frostbolt
+local TargetValidation = TargetValidation
+local Gloves = GetInventoryItemID(&amp;quot;player&amp;quot;, 10)
+
+-- If we don&amp;apos;t have Engineering, don&amp;apos;t bother accessing.
+if not hasEngi then return false end
+
+-- Don&amp;apos;t use outside of Combat
+if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
+
+-- Don&amp;apos;t use it if it&amp;apos;s on cooldown as well!
+if GetItemCooldown(Gloves) &amp;gt; 0 then return false end
+
+-- Cast Engineering Gloves
+if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) then UseItemByName(Gloves) return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>

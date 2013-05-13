@@ -569,9 +569,6 @@ if UnitBuffID(&amp;quot;player&amp;quot;,PQ_IV) or select(2,GetSpellCooldown(PQ_
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Pet] Freeze</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Freeze = PQ_Freeze
 
--- Water Elemental Freeze Level Check
-if not IsPlayerSpell(PQ_Freeze) then return false end
-
 if not PQI_MentallyMage_PetFreezeMouseover_enable then return false end
 
 if UnitExists(&amp;quot;pet&amp;quot;)

@@ -113,9 +113,19 @@ if not PQ_FireLoaded then
 	infernoCrit = 0
 	fireballCrit = 0
 	
+  	-- Initialize  Tracker
+  	if not dotTracker then dotTracker = {} end
 	
 	PQ_FireLoaded = true
 	PQR_WriteToChat(&amp;quot;|cff91e782Hysteria Fire Mage data is |cff82cee7Loaded!|cffffffff&amp;quot;)
+end
+
+------------------------------------------------------------
+-- Misc. Checks
+------------------------
+-- Reset DoT Tracker if we&amp;apos;re not in combat
+if not UnitAffectingCombat(&amp;quot;player&amp;quot;) and #dotTracker &amp;gt; 0 then
+	dotTracker = {}
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Healthstone</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>if not PQI_MentallyMage_Healthstone_enable then return false end
 local v=PQI_MentallyMage_Healthstone_value
 local Hysteria_UnitInfo = Hysteria_UnitInfo

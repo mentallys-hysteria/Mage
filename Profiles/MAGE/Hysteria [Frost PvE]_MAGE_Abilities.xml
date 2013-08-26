@@ -77,7 +77,10 @@ end
 if IsPlayerSpell(56364) then PQ_IV = 131078 else PQ_IV = 12472 end
 
 -- Halt or Stop the profile under certain conditions
-if IsMounted() then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Combat Detection</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>if not PQI_MentallyOffensiveSettings_CombatDetection_enable then return false end
+if IsMounted() then return true end
+
+-- Evocation work-around
+if stopRotation then return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Misc] Combat Detection</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>if not PQI_MentallyOffensiveSettings_CombatDetection_enable then return false end
 
 if (not UnitAffectingCombat(&amp;quot;player&amp;quot;) and UnitExists(&amp;quot;boss1&amp;quot;))
 	or not UnitAffectingCombat(&amp;quot;player&amp;quot;)
@@ -573,6 +576,7 @@ if IsPlayerSpell(PQ_FrostBomb) then
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frozen Orb</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FO = PQ_FO
 local PQ_FoF = PQ_FoF
+local SpecialUnit = SpecialUnit
 local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
 
@@ -581,6 +585,11 @@ if not IsPlayerSpell(PQ_FO) then return false end
 
 -- Spell is on a cooldown
 if not PQR_SpellAvailable(PQ_FO) then return false end
+
+-- Did we enable boss only CDs?
+if PQI_MentallyOffensiveSettings_BossCooldown_enable then
+	if not SpecialUnit() then return false end
+end
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) and not SCD then
 	CastSpellByName(GetSpellInfo(PQ_FO),&amp;quot;target&amp;quot;) return true

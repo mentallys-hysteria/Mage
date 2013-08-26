@@ -418,6 +418,16 @@ if frostBolt and frostBolt &amp;gt; 1 then return false end
 -- Somehow on a CD?
 if not PQR_SpellAvailable(PQ_Frostbolt) then return false end
 
+-- Ice Floes support
+if PQI_MentallyOffensiveSettings_AutoIceFloes_enable and PQR_IsMoving(0.1) then
+	if PQR_SpellAvailable(108839) and IsPlayerSpell(108839) then
+		CastSpellByName(GetSpellInfo(108839),&amp;quot;player&amp;quot;)
+		if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) then
+			CastSpellByName(GetSpellInfo(PQ_Frostbolt),&amp;quot;target&amp;quot;) return true
+		end
+	end
+end
+
 -- Bad bad movement...
 if PQR_IsMoving(0.1) then return false end
 
@@ -506,6 +516,16 @@ local TargetValidation = TargetValidation
 
 -- Somehow on a CD?
 if not PQR_SpellAvailable(PQ_Frostbolt) then return false end
+
+-- Ice Floes support
+if PQI_MentallyOffensiveSettings_AutoIceFloes_enable and PQR_IsMoving(0.1) then
+	if PQR_SpellAvailable(108839) and IsPlayerSpell(108839) then
+		CastSpellByName(GetSpellInfo(108839),&amp;quot;player&amp;quot;)
+		if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) then
+			CastSpellByName(GetSpellInfo(PQ_Frostbolt),&amp;quot;target&amp;quot;) return true
+		end
+	end
+end
 
 -- Bad bad movement...
 if PQR_IsMoving(0.1) then return false end

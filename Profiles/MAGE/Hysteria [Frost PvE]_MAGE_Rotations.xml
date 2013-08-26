@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" ?><MAGE><Options><ProfileVersion>2.9.1</ProfileVersion><AbilityURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Abilities.xml</AbilityURL><RotationURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Rotations.xml</RotationURL><LuaURL>https://raw.github.com/mentallys-hysteria/Mage/master/Data/PQR_Hysteria_Data.lua</LuaURL><LegacyMode>True</LegacyMode></Options><Rotation><RotationName>Standard</RotationName><RotationDefault>false</RotationDefault><RotationList>[Misc] Initialization|[Misc] Pause Rotation|[Misc] Automatic Buffing|[Misc] Pet Management|[Misc] Create Mana Gem|[Support] Level 90 Talent|[Misc] Instanced Combat Detection|[Support] Healthstone|[Support] Mana Gem|[Support] Level 30 Talent|[Support] Level 45 Talent|[Support] Mirror Image|[Support] Icy Veins|[Support] Herbalism: Lifeblood|[Support] Racials|[Support] Frag Belt|[Support] Auto Potion|[Support] Synapse Springs|[Support] Presence of Mind|[Support] Alter Time|[Pet] Freeze|Flamestrike (Mouseover)|Frozen Orb|Mage Bomb (Focus)|Mage Bomb (Mouseover)|Mage Bomb|Frostfire Bolt|Ice Lance|Frostbolt|Fire Blast (Movement)|Ice Lance (Movement)</RotationList><RequireCombat>false</RequireCombat><RotationNotes>Automatic Frost Mage rotation based upon personal experience SimulactionCraft. Ready for 5.2 and beyond!
+<?xml version="1.0" encoding="utf-8" ?><MAGE><Options><ProfileVersion>3.0</ProfileVersion><AbilityURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Abilities.xml</AbilityURL><RotationURL>https://raw.github.com/mentallys-hysteria/Mage/master/Profiles/MAGE/Hysteria%20%5BFrost%20PvE%5D_MAGE_Rotations.xml</RotationURL><LuaURL>https://raw.github.com/mentallys-hysteria/Mage/master/Data/PQR_Hysteria_Data.lua</LuaURL><LegacyMode>True</LegacyMode></Options><Rotation><RotationName>Standard (PvE)</RotationName><RotationDefault>false</RotationDefault><RotationList>[Misc] Profile Init|[Misc] Spell Queue System|[Misc] Pet Management|[Misc] Automatic Buffing|[Misc] Create Mana Gem|[Misc] Hold: Pause Rotation|[Misc] Trigger: Hold Cooldowns|[Misc] Level 90 Talent|[Misc] Combat Detection|[Support] Boss Immunities|[Support] Use Mana Gem|[Support] Symbiosis|[Support] Healthstone|[Support] Auto: Potion|[Support] Racials|[Support] Herbalism: Lifeblood|[Support] Frag Belt|[Support] Remove Curse|[Support] Spell Singer|[Support] Level 45 Talent|[Support] Level 30 Talent|Pet: Freeze|Presence of Mind|Mirror Image|Frozen Orb|[AOE] Flamestrike|[AOE] Cone of Cold|[AOE] Arcane Explosion|[AOE] Blizzard|Icy Veins|Alter Time|Frostfire Bolt (Alter Time)|Ice Lance (Alter Time)|Mage Bomb (Boss)|Mage Bomb|Mage Bomb (Focus)|Mage Bomb (Mouseover)|Frostbolt (Debuff)|Frostfire Bolt|Ice Lance|Frostbolt|Fire Blast (Movement)|Ice Lance (Movement)</RotationList><RequireCombat>false</RequireCombat><RotationNotes>Frost Mage Profile - 5.4 Ready!
 
-Support:
-- Focus dotting with Mage Bomb
-- Mouseover dotting with Mage Bomb
-- Smart boss dotting with Mage Bomb
+Requirement: PQInterface version 2.22 and above!
 
-- Automatic Buffing
-- Automatic Mana Gem usage
-- Automatic DPS Potion usage
-- Automatic Healthstone usage
+The profile(s) support all known and coming Talent and Glyph combinations for the Frost spec.
+Check PQInterface in-game for customizable key-bindings to suit your needs!
 
-- Full cooldown support with 2 different modes. Manual or Automatic
+Some select features:
+- Automatic boss dotting
+- AoE Mode trigger that changes depending on your stats
+- DoT Tracking System
+- DoT Power Tracking System
+- Full defensive cool-down support
+- Fully automated Pet Management system
+- Fully configurable and customizable through PQInterface
 
-.. And so much more!
-
-Default keybindings:
-- Level 90 Talent: Right Alt
-- Level 30 Talent: Right Control
-- Flamestrike (on Mouseover): Left Alt
-- Pet Freeze (on Mouseover): Left Shift
-
-Everything is completely configurable in-game for the ultimate custom play experience!</RotationNotes></Rotation></MAGE>
+Everything has been laid out to push the most DPS possible from your class. If you like my work, please consider posting ideas, suggestions and feedback in my thread at OwnedCore - [PQR] Mentally&amp;apos;s Hysteria!
+- Elizabeth &amp;quot;Mentally&amp;quot;</RotationNotes></Rotation></MAGE>

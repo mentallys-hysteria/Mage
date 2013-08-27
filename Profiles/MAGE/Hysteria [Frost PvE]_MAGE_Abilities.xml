@@ -570,6 +570,7 @@ end
 
 if IsPlayerSpell(PQ_FrostBomb) then
 	if not PQR_SpellAvailable(PQ_FrostBomb) then return false end
+	if PQR_IsMoving(0.1) then return false end
 	
 	if TargetValidation(&amp;quot;target&amp;quot;,PQ_FrostBomb) then
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;target&amp;quot;) return true
@@ -842,6 +843,7 @@ end
 
 if IsPlayerSpell(PQ_FrostBomb) then
 	if not PQR_SpellAvailable(PQ_FrostBomb) then return false end
+	if PQR_IsMoving(0.1) then return false end
 	
 	if TargetValidation(&amp;quot;focus&amp;quot;,PQ_FrostBomb) then
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;focus&amp;quot;) return true
@@ -883,6 +885,7 @@ end
 
 if IsPlayerSpell(PQ_FrostBomb) then
 	if not PQR_SpellAvailable(PQ_FrostBomb) then return false end
+	if PQR_IsMoving(0.1) then return false end
 	
 	if TargetValidation(&amp;quot;mouseover&amp;quot;,PQ_FrostBomb) then
 		CastSpellByName(GetSpellInfo(PQ_FrostBomb),&amp;quot;mouseover&amp;quot;) return true
@@ -925,6 +928,7 @@ for i=1,4 do
 	
 	if IsPlayerSpell(PQ_FrostBomb) then
 		if not PQR_SpellAvailable(PQ_FrostBomb) then return false end
+		if PQR_IsMoving(0.1) then return false end
 		
 		if TargetValidation(bossUnit,PQ_FrostBomb) then
 			CastSpellByName(GetSpellInfo(PQ_FrostBomb),bossUnit) return true

@@ -455,13 +455,6 @@ function HysteriaFrame_OnEvent(self,event,...)
 			end
 		end
 		
-		-- Successfull Spell Casts
-		if subEvent == "SPELL_CAST_SUCCESS" then
-			if UnitName("player") == source then
-				if spellID == PQ_Evo then stopRotation = true end
-			end
-		end
-		
 		-- Unsuccessfull Spell Casts
 		if subEvent == "SPELL_CAST_FAILED" then
 			if UnitName("player") == source then
@@ -544,6 +537,10 @@ function HysteriaFrame_OnEvent(self,event,...)
 		
 		-- Removed Aura Events
 		if subEvent == "SPELL_AURA_REMOVED" then
+			if UnitName("player") == target then
+				if spellID == PQ_Evo then stopRotation = false end
+			end
+			
 			if UnitName("player") == source then
 				-- Doom fell of a unit, remove unit from tracker.
 				if spellID == PQ_Doom then
@@ -588,6 +585,10 @@ function HysteriaFrame_OnEvent(self,event,...)
 		
 		-- Applied Aura Events
 		if subEvent == "SPELL_AURA_APPLIED" then
+			if UnitName("player") == target then
+				if spellID == PQ_Evo then stopRotation = true end
+			end
+			
 			if UnitName("player") == source then
 				-- Doom applied to a unit, add unit to tracker
 				if spellID == PQ_Doom then

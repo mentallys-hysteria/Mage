@@ -933,6 +933,7 @@ for i=1,4 do
 	if IsPlayerSpell(PQ_NT) then
 		local NT = select(7,UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;))
 		if not PQR_SpellAvailable(PQ_NT) then return false end
+		if IsSpellInRange(GetSpellInfo(PQ_NT),bossUnit) == 0 then return false end
 		
 		if NT then
 			if NT - GetTime() &amp;lt; 2 then 
@@ -946,6 +947,7 @@ for i=1,4 do
 	if IsPlayerSpell(PQ_LB) then
 		local LB = select(7,UnitDebuffID(bossUnit,PQ_LB,&amp;quot;PLAYER&amp;quot;))
 		if not PQR_SpellAvailable(PQ_LB) then return false end
+		if IsSpellInRange(GetSpellInfo(PQ_LB),bossUnit) == 0 then return false end
 		
 		if LivingBomb &amp;lt; 3 then
 			if LB then
@@ -955,15 +957,6 @@ for i=1,4 do
 			else
 				if TargetValidation(bossUnit,PQ_LB) then CastSpellByName(GetSpellInfo(PQ_LB),bossUnit) return true end
 			end
-		end
-	end
-	
-	if IsPlayerSpell(PQ_FrostBomb) then
-		if not PQR_SpellAvailable(PQ_FrostBomb) then return false end
-		if PQR_IsMoving(0.1) then return false end
-		
-		if TargetValidation(bossUnit,PQ_FrostBomb) then
-			CastSpellByName(GetSpellInfo(PQ_FrostBomb),bossUnit) return true
 		end
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Level 30 Talent</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Barrier = PQ_Barrier

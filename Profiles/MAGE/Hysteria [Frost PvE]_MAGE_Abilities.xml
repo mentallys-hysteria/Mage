@@ -76,6 +76,18 @@ end
 -- Initialize Glyphs
 if IsPlayerSpell(56364) then PQ_IV = 131078 else PQ_IV = 12472 end
 
+-- Invoker&amp;apos;s Energy is a tough nut to crack
+if invokeTimer then
+	if GetTime() - invokeTimer &amp;gt; 0.5 then
+		if not UnitChannelInfo(&amp;quot;player&amp;quot;) and (not UnitBuffID(&amp;quot;player&amp;quot;,PQ_Invo) or
+			(UnitBuffID(&amp;quot;player&amp;quot;,PQ_Invo) and select(7,UnitBuffID(&amp;quot;player&amp;quot;,PQ_Invo)) &amp;lt; 10)) then
+				mentalMessage:message(&amp;quot;\124cFFAADD00 Evocation interrupted.  Invoker&amp;apos;s Energy not updated.&amp;quot;)
+				stopRotation = false
+				invokeTimer = false
+		end
+	end		
+end
+
 -- We want to pause the entire profile when we&amp;apos;re doing certain things..
 if UnitIsDeadOrGhost(&amp;quot;player&amp;quot;)		-- Snap! Deaded
 	or UnitBuffID(&amp;quot;player&amp;quot;,104934)	-- Eating (Feast/Banquet)

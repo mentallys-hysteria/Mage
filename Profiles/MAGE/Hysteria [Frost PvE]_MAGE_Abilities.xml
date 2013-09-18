@@ -468,6 +468,7 @@ local PQ_Icicles = PQ_Icicles
 local spellCooldown = spellCooldown
 local TargetValidation = TargetValidation
 local fingersOfFrost = select(4,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF))
+local fingersTimer = select(7,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF))
 
 -- Sanity Checks
 if not IsPlayerSpell(PQ_IL) then return false end
@@ -491,7 +492,14 @@ if UnitBuffID(&amp;quot;player&amp;quot;,146557) then
 end
 
 -- Business as usual
-if fingersOfFrost &amp;lt; 2 or (fingersOfFrost &amp;gt; 1 and spellCooldown(PQ_IV) &amp;gt; 2) then
+if fingersOfFrost &amp;lt; 2 then
+	if PQ_Icicles &amp;gt; 4 or fingersTimer - GetTime() &amp;lt; 1.5 then
+		if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+			CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+		end
+	end
+else
+	if spellCooldown(PQ_IV) &amp;lt; 2 then return false end
 	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
 		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
 	end
@@ -914,8 +922,8 @@ for i=1,4 do
 	
 	if IsPlayerSpell(PQ_NT) then
 		local NT = select(7,UnitDebuffID(bossUnit,PQ_NT,&amp;quot;PLAYER&amp;quot;))
-		if not PQR_SpellAvailable(PQ_NT) then return false end
 		if IsSpellInRange(GetSpellInfo(PQ_NT),bossUnit) == 0 then return false end
+		if not PQR_SpellAvailable(PQ_NT) then return false end
 		
 		if NT then
 			if NT - GetTime() &amp;lt; 2 then 
@@ -928,8 +936,8 @@ for i=1,4 do
 	
 	if IsPlayerSpell(PQ_LB) then
 		local LB = select(7,UnitDebuffID(bossUnit,PQ_LB,&amp;quot;PLAYER&amp;quot;))
-		if not PQR_SpellAvailable(PQ_LB) then return false end
 		if IsSpellInRange(GetSpellInfo(PQ_LB),bossUnit) == 0 then return false end
+		if not PQR_SpellAvailable(PQ_LB) then return false end
 		
 		if LivingBomb &amp;lt; 3 then
 			if LB then

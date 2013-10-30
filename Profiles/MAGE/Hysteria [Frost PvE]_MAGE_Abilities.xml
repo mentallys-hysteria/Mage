@@ -243,7 +243,8 @@ then CastSpellByName(GetSpellInfo(PQ_IV),&amp;quot;player&amp;quot;) return true
 if PQR_IsMoving(0.1) then return false end
 
 -- Sanity checks
-if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) or select(4,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF)) &amp;lt; 2 then return false end
+if (not UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF) or select(4,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF)) &amp;lt; 2)
+	and (SpecialUnit() and T2D(&amp;quot;target&amp;quot;) &amp;gt; 30) then return false end
 
 -- Did we enable boss only CDs?
 if PQI_MentallyOffensiveSettings_BossCooldown_enable then
@@ -303,7 +304,7 @@ if not PQ_HasHero() or T2D(&amp;quot;target&amp;quot;) &amp;gt; 20 then return f
 
 -- At this point, we should just use the potion if all of the above is true
 UseItemByName(76093)</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Boss Immunities</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>-- Let&amp;apos;s try and detect immunities
-if UnitBuffID(&amp;quot;target&amp;quot;,116994) or UnitBuffID(&amp;quot;target&amp;quot;,122540) or UnitBuffID(&amp;quot;target&amp;quot;,123250) or UnitBuffID(&amp;quot;target&amp;quot;,106062) or UnitBuffID(&amp;quot;target&amp;quot;,110945)
+if UnitBuffID(&amp;quot;target&amp;quot;,143593) or UnitBuffID(&amp;quot;target&amp;quot;,116994) or UnitBuffID(&amp;quot;target&amp;quot;,122540) or UnitBuffID(&amp;quot;target&amp;quot;,123250) or UnitBuffID(&amp;quot;target&amp;quot;,106062) or UnitBuffID(&amp;quot;target&amp;quot;,110945)
 	then return false end
 	
 -- Cancel spell casts or channels on Silences
@@ -349,27 +350,24 @@ if GetItemCount(5512) &amp;gt; 0
 	and Hysteria_UnitInfo(&amp;quot;player&amp;quot;) &amp;lt;= v
 	and PQR_SpellAvailable(5512)
 	and GetItemCooldown(5512) == 0
-then UseItemByName(5512) return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Herbalism: Lifeblood</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local SpecialUnit = SpecialUnit
+then UseItemByName(5512) return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Herbalism: Lifeblood</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local SCD = SCD
+local SpecialUnit = SpecialUnit
+
+if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
 
 -- Herbalism&amp;apos;s Lifeblood
 PQ_Lifeblood = {81708,74497,121279,55428,55480,55500,55501,55502,55503}
 
+-- Did we enable boss only CDs?
+if PQI_MentallyOffensiveSettings_BossCooldown_enable then
+	if not SpecialUnit() then return false end
+end
+
 for i=1,#PQ_Lifeblood do
 	if IsPlayerSpell(PQ_Lifeblood[i])
 		and PQR_SpellAvailable(PQ_Lifeblood[i])
-		and SpecialUnit()
 		and not SCD
-	then
-		if not PQI_MentallyOffensiveSettings_BossCooldown_enable then
-			CastSpellByName(GetSpellInfo(PQ_Lifeblood[i]),&amp;quot;player&amp;quot;)
-			return true
-		else
-			if SpecialUnit() then
-				CastSpellByName(GetSpellInfo(PQ_Lifeblood[i]),&amp;quot;player&amp;quot;)
-				return true
-			end
-		end
-	end
+	then CastSpellByName(GetSpellInfo(PQ_Lifeblood[i]),&amp;quot;player&amp;quot;) return true end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Racials</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local T2D = T2D
 local PQ_IV = PQ_IV
 local SpecialUnit = SpecialUnit
@@ -474,16 +472,6 @@ local fingersTimer = select(7,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF))
 if not IsPlayerSpell(PQ_IL) then return false end
 if not PQR_SpellAvailable(PQ_IL) then return false end
 
--- Icicle Support
-if PQ_Icicles &amp;gt; 4 then
-	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
-		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
-	end
-end
-
--- Sanity Checks
-if not fingersOfFrost then return false end
-
 -- Tier support
 if UnitBuffID(&amp;quot;player&amp;quot;,146557) then
 	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
@@ -491,18 +479,16 @@ if UnitBuffID(&amp;quot;player&amp;quot;,146557) then
 	end
 end
 
--- Business as usual
-if fingersOfFrost &amp;lt; 2 then
-	if PQ_Icicles &amp;gt; 4 or fingersTimer - GetTime() &amp;lt; 1.5 then
-		if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
-			CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
-		end
-	end
-else
-	if spellCooldown(PQ_IV) &amp;lt; 2 then return false end
-	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
-		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
-	end
+if not fingersOfFrost then return false end
+
+if (fingersOfFrost and fingersOfFrost &amp;lt; 2) and
+	(fingersTimer - GetTime() &amp;gt; 2 or PQ_Icicles &amp;lt; 5) then return false end
+	
+if spellCooldown(PQ_IV) &amp;lt; 3 and not SCD then return false end
+
+if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+	--CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+	return true
 end</Lua><RecastDelay>300</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frostfire Bolt</Name><Default>false</Default><SpellID>44614</SpellID><Actions></Actions><Lua>local PQ_IV = PQ_IV
 local PQ_FFB = PQ_FFB
 local PQ_BrainF = PQ_BrainF
@@ -540,7 +526,9 @@ if PQI_MentallyOffensiveSettings_AutoIceFloes_enable and PQR_IsMoving(0.1) then
 end
 
 -- Bad bad movement...
-if PQR_IsMoving(0.1) then return false end
+if not UnitBuffID(&amp;quot;player&amp;quot;,108839) then
+	if PQR_IsMoving(0.1) then return false end
+end
 
 if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) then
 	CastSpellByName(GetSpellInfo(PQ_Frostbolt),&amp;quot;target&amp;quot;) return true
@@ -614,7 +602,6 @@ if TargetValidation(&amp;quot;target&amp;quot;,PQ_Frostbolt) and not SCD then
 	CastSpellByName(GetSpellInfo(PQ_FO),&amp;quot;target&amp;quot;) return true
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mirror Image</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_MI = PQ_MI
 local SpecialUnit = SpecialUnit
-local PQ_Frostbolt = PQ_Frostbolt
 local TargetValidation = TargetValidation
 
 if not PQI_MentallyOffensiveSettings_AutoMirrorImage_enable then return false end
@@ -795,6 +782,7 @@ for i=1,#targetTable do
 		end
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Remove Curse</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_RemoveCurse = 475
+PQR_CustomTarget = &amp;quot;player&amp;quot;
 
 -- Ability disabled in PQI
 if not PQI_MentallyDefensiveSettings_RemoveCurse_enable then return false end
@@ -815,6 +803,7 @@ if IsInRaid() then group = &amp;quot;raid&amp;quot; elseif IsInGroup() then grou
 -- Remove curses from raid members
 for i=1,GetNumGroupMembers() do
 	local member = group..i
+	PQR_CustomTarget = member
 	
 	if UnitIsDeadOrGhost(member) then return false end
 	if PQR_IsOutOfSight(member,1) then return false end
@@ -824,7 +813,7 @@ for i=1,GetNumGroupMembers() do
 			CastSpellByName(GetSpellInfo(PQ_RemoveCurse),member) return true
 		end
 	end
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Focus)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_NT = PQ_NT
+end</Lua><RecastDelay>0</RecastDelay><Target>Custom</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Mage Bomb (Focus)</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_NT = PQ_NT
 local PQ_LB = PQ_LB
 local PQ_FrostBomb = PQ_FrostBomb
 local TargetValidation = TargetValidation
@@ -917,7 +906,7 @@ for i=1,4 do
 	local bossUnit = &amp;quot;boss&amp;quot;..i
 	
 	-- Let&amp;apos;s try and detect immunities
-	if UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250) or UnitBuffID(bossUnit,106062) or UnitBuffID(bossUnit,110945)
+	if UnitBuffID(bossUnit,143593) or UnitBuffID(bossUnit,116994) or UnitBuffID(bossUnit,122540) or UnitBuffID(bossUnit,123250) or UnitBuffID(bossUnit,106062) or UnitBuffID(bossUnit,110945)
 		then return false end
 	
 	if IsPlayerSpell(PQ_NT) then
@@ -1009,6 +998,7 @@ if IsPlayerSpell(PQ_RoF) then
 	end
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[AOE] Flamestrike</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_FS = PQ_FS
 
+if PQR_IsMoving(0.1) then return false end
 if not PQR_SpellAvailable(PQ_FS) then return false end
 
 if PQI_MentallyOffensiveSettings_AOEMode_enable
@@ -1022,15 +1012,16 @@ then
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[AOE] Cone of Cold</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_CoC = PQ_CoC
 
 if not PQR_SpellAvailable(PQ_CoC) then return false end
+if UnitExists(&amp;quot;target&amp;quot;) and not CheckInteractDistance(&amp;quot;target&amp;quot;,3) then return false end
+if not PQR_UnitFacing(&amp;quot;player&amp;quot;, &amp;quot;target&amp;quot;) then return false end
 
 if PQI_MentallyOffensiveSettings_AOEMode_enable
 	and PQI:IsHotkeys(PQI_MentallyOffensiveSettings_AOEMode_key)
 	and not GetCurrentKeyBoardFocus()
 then SpellCancelQueuedSpell() CastSpellByName(GetSpellInfo(PQ_CoC),nil) return true end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[AOE] Blizzard</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Round = PQ_Round
 local PQ_Blizzard = PQ_Blizzard
-local haste = PQ_Round(UnitSpellHaste(&amp;quot;player&amp;quot;),2)
 
-if haste &amp;lt; 50 then return false end
+if PQR_IsMoving(0.1) then return false end
 if not PQR_SpellAvailable(PQ_Blizzard) then return false end
 
 if PQI_MentallyOffensiveSettings_AOEMode_enable
@@ -1043,9 +1034,9 @@ then
 	return true
 end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[AOE] Arcane Explosion</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_Round = PQ_Round
 local PQ_Explosion = PQ_Explosion
-local haste = PQ_Round(UnitSpellHaste(&amp;quot;player&amp;quot;),2)
 
-if haste &amp;gt; 50 then return false end
+if not PQR_IsMoving(0.1) then return false end
+if UnitExists(&amp;quot;target&amp;quot;) and not CheckInteractDistance(&amp;quot;target&amp;quot;,3) then return false end
 if not PQR_SpellAvailable(PQ_Explosion) then return false end
 
 if PQI_MentallyOffensiveSettings_AOEMode_enable
@@ -1055,6 +1046,8 @@ then SpellCancelQueuedSpell() CastSpellByName(GetSpellInfo(PQ_Explosion),nil) re
 local PQ_RoP = PQ_RoP
 local PQ_Invo = PQ_Invo
 local PQ_Ward = PQ_Ward
+local Hysteria_UnitInfo = Hysteria_UnitInfo
+local mana = select(3,Hysteria_UnitInfo(&amp;quot;player&amp;quot;))
 
 -- Disable Level 90 Talents
 if not PQI_MentallyDefensiveSettings_Level90Talent_enable then return false end
@@ -1063,10 +1056,29 @@ if not PQI_MentallyDefensiveSettings_Level90Talent_enable then return false end
 if IsPlayerSpell(PQ_Invo) then
 	if PQR_IsMoving(0.1) then return false end
 	
+	-- Hotkey mode
 	if PQR_SpellAvailable(PQ_Evo)
 		and PQI:IsHotkeys(PQI_MentallyDefensiveSettings_Level90Talent_key)
 		and not GetCurrentKeyBoardFocus() then
 			CastSpellByName(GetSpellInfo(PQ_Evo),&amp;quot;player&amp;quot;) return true
+	end
+	
+	-- Automatic Mode
+	if PQI_MentallyOffensiveSettings_AutoInvocation_enable then
+		if not UnitAffectingCombat(&amp;quot;player&amp;quot;) then return false end
+		
+		if spellCooldown(PQ_IV) == 0 and mana &amp;lt; 20 then
+			CastSpellByName(GetSpellInfo(PQ_Evo),&amp;quot;player&amp;quot;)
+			return true
+		end
+	
+		if UnitBuffID(&amp;quot;player&amp;quot;, PQ_ATB) and mana &amp;gt; 10 then return false end
+		
+		if select(7,UnitBuffID(&amp;quot;player&amp;quot;, PQ_InvoBuff)) then
+			if select(7,UnitBuffID(&amp;quot;player&amp;quot;, PQ_InvoBuff)) &amp;gt; 1.5 and mana &amp;gt; 10 then return false end
+		end
+		
+		CastSpellByName(GetSpellInfo(PQ_Evo),&amp;quot;player&amp;quot;) return true
 	end
 end
 
@@ -1123,15 +1135,18 @@ if PQI_MentallyDefensiveSettings_IceBlock_enable then
 		else CastSpellByName(GetSpellInfo(PQ_IB),&amp;quot;player&amp;quot;) return true end
 	end
 	return false
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Synapse Springs</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local PQ_MI = PQ_MI
-local PQ_Frostbolt = PQ_Frostbolt
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>[Support] Synapse Springs</Name><Default>false</Default><SpellID>0</SpellID><Actions></Actions><Lua>local T2D = T2D
+local PQ_MI = PQ_MI
+local PQ_Invo = PQ_Invo
+local SpecialUnit = SpecialUnit
 local MICD = spellCooldown(PQ_MI)
+local ATCD = spellCooldown(PQ_AT)
 local TargetValidation = TargetValidation
 local Gloves = GetInventoryItemID(&amp;quot;player&amp;quot;, 10)
 
 -- If we don&amp;apos;t know Engineering. Don&amp;apos;t activate.
 for i=1,9 do
-	if select(7,GetProfessionInfo(i)) == 202 then hasEngi = true end
+	if select(7,GetProfessionInfo(i)) == 202 then hasEngi = true else hasEngi = false end
 end
 
 -- Don&amp;apos;t have Engineering.
@@ -1142,6 +1157,11 @@ if not IsEquippedItem(Gloves) then return false end
 
 -- Don&amp;apos;t use it if it&amp;apos;s on cooldown as well!
 if GetItemCooldown(Gloves) &amp;gt; 0 then return false end
+
+if (ATCD &amp;gt; 10 and ATCD &amp;lt; 55) or
+    (IsPlayerSpell(PQ_Invo) and PQ_GetInvoLeft() &amp;lt; 20) or
+    (SpecialUnit() and T2D(&amp;quot;target&amp;quot;)&amp;lt;25)
+	then return false end
 
 if PQR_SpellAvailable(PQ_MI) or MICD &amp;lt; 40 then return false end
 
@@ -1157,4 +1177,66 @@ if not PQR_SpellAvailable(PQ_CS) then return false end
 
 if Hysteria_UnitInfo(&amp;quot;player&amp;quot;) &amp;lt;= v then
 	CastSpellByName(GetSpellInfo(PQ_CS),&amp;quot;player&amp;quot;) return true
-end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>
+end</Lua><RecastDelay>0</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Frostfire Bolt (Trash)</Name><Default>false</Default><SpellID>44614</SpellID><Actions></Actions><Lua>local PQ_IV = PQ_IV
+local PQ_FFB = PQ_FFB
+local PQ_BrainF = PQ_BrainF
+local spellCooldown = spellCooldown
+local TargetValidation = TargetValidation
+
+if IsEncounterInProgress() then return false end
+
+-- Not yet learned
+if not IsPlayerSpell(PQ_FFB) then return false end
+
+-- Frost locked?!
+if not PQR_SpellAvailable(PQ_FFB) then return false end
+
+-- React only to FoF procs
+if not UnitBuffID(&amp;quot;player&amp;quot;,PQ_BrainF) then return false end
+
+if TargetValidation(&amp;quot;target&amp;quot;,PQ_FFB) then
+	CastSpellByName(GetSpellInfo(PQ_FFB),&amp;quot;target&amp;quot;) return true
+end</Lua><RecastDelay>200</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability><Ability><Name>Ice Lance (Trash)</Name><Default>false</Default><SpellID>30455</SpellID><Actions></Actions><Lua>local PQ_IV = PQ_IV
+local PQ_IL = PQ_IL
+local PQ_FoF = PQ_FoF
+local PQ_Icicles = PQ_Icicles
+local spellCooldown = spellCooldown
+local TargetValidation = TargetValidation
+local fingersOfFrost = select(4,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF))
+local fingersTimer = select(7,UnitBuffID(&amp;quot;player&amp;quot;,PQ_FoF))
+
+if IsEncounterInProgress() then return false end
+
+-- Sanity Checks
+if not IsPlayerSpell(PQ_IL) then return false end
+if not PQR_SpellAvailable(PQ_IL) then return false end
+
+-- Icicle Support
+if PQ_Icicles &amp;gt; 4 then
+	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+	end
+end
+
+-- Sanity Checks
+if not fingersOfFrost then return false end
+
+-- Tier support
+if UnitBuffID(&amp;quot;player&amp;quot;,146557) then
+	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+	end
+end
+
+-- Business as usual
+if fingersOfFrost &amp;lt; 2 then
+	if PQ_Icicles &amp;gt; 4 or fingersTimer - GetTime() &amp;lt; 1.5 then
+		if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+			CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+		end
+	end
+else
+	if TargetValidation(&amp;quot;target&amp;quot;,PQ_IL) then
+		CastSpellByName(GetSpellInfo(PQ_IL),&amp;quot;target&amp;quot;) return true
+	end
+end</Lua><RecastDelay>300</RecastDelay><Target>Target</Target><CancelChannel>False</CancelChannel><SkipUnknown>True</SkipUnknown></Ability></MAGE>

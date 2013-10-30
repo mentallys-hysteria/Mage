@@ -1,5 +1,5 @@
 ## Welcome
-Mentally's Mage Profiles - 5.2 Ready!
+Mentally's Mage Profiles - 5.4 Ready!
 The Mage profiles are <b>100%</b> <i>customizable</i> and <i>user-friendly</i>!
 
 The Profiles comes in 2 versions:
